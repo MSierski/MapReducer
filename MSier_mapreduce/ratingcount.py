@@ -12,10 +12,13 @@ class MRHotelRaitingCount(MRJob):
 
 
      def mapper(self, _, line):
-         (userId, movieId, rating, timestamp) = line.split(",")
-         if (rating != "rating"):    
-            result = [movieId, float(rating)]      
+         splits = line.split(",")
+         if len(splits) == '4':    
+            result = [movieId,('R', float(rating))]      
             yield result
+         if len(splits) == '3':
+            result = [movieId,('M', title)] 
+
 
      def reducer(self, key, value):
         x = 0
@@ -29,3 +32,7 @@ class MRHotelRaitingCount(MRJob):
 
 if __name__ == '__main__':
     MRHotelRaitingCount.run()
+
+
+
+ #https://gist.github.com/rjurney/2f350b2cbed9862b692b   
